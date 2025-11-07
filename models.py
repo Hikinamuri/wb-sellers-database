@@ -30,11 +30,25 @@ class Product(Base):
     user_id = Column(String, ForeignKey("users.tg_id"))
     url = Column(String)
     name = Column(String)
-    description = Column(String)
+    description = Column(Text)  # можно хранить длинный текст
     image_url = Column(String)
-    price = Column(Float)
-    info = Column(JSON)
+
+    # Новые поля
+    wb_id = Column(Integer, nullable=True)            # артикула/ID WB
+    brand = Column(String, nullable=True)
+    seller = Column(String, nullable=True)
+    rating = Column(Float, nullable=True)
+    feedbacks = Column(Integer, nullable=True)
+    basic_price = Column(Float, nullable=True)
+    discount = Column(Integer, nullable=True)
+    stocks = Column(Integer, nullable=True)
+    stocks_by_size = Column(JSON, nullable=True)      # json array
+    images = Column(JSON, nullable=True)              # json array (список url)
+
+    info = Column(JSON, nullable=True)                # доп. JSON
     status = Column(Enum(ProductStatus), default=ProductStatus.processing)
     scheduled_date = Column(DateTime)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    price = Column(Float)
+
     user = relationship("User", back_populates="products")
